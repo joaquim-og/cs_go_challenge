@@ -1,4 +1,4 @@
-package com.confradestech.csgochallenge.dataSources.response.runningMatches
+package com.confradestech.csgochallenge.dataSources.response
 
 import com.confradestech.csgochallenge.dataSources.domain.Game
 import com.confradestech.csgochallenge.dataSources.domain.League
@@ -13,7 +13,7 @@ import com.confradestech.csgochallenge.dataSources.domain.VideogameVersion
 import com.confradestech.csgochallenge.dataSources.domain.Winner
 import com.google.gson.annotations.SerializedName
 
-data class RunningMatchesResponseItem(
+data class MatchesResponseItem(
     @SerializedName("begin_at")
     val beginAt: String,
     @SerializedName("detailed_stats")

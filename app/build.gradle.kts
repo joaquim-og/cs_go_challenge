@@ -26,14 +26,18 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches\"")
+            buildConfigField ("String", "TOKEN", "'N__a8yh_5itmerXcg_ND3HYJY3u6CTvVNtWgRlYSekr8sGlw31E'")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
         getByName("debug") {
-            isMinifyEnabled = true
+            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches\"")
+            buildConfigField ("String", "TOKEN", "\"N__a8yh_5itmerXcg_ND3HYJY3u6CTvVNtWgRlYSekr8sGlw31E\"")
+            isMinifyEnabled = false
         }
     }
     compileOptions {
@@ -45,6 +49,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"

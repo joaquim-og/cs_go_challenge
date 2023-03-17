@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "507329497811",
+    "project_id": "cs-go-challenge",
+    "storage_bucket": "cs-go-challenge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507329497811:android:69717ad39da4239f076226",
+        "android_client_info": {
+          "package_name": "com.confradestech.csgochallenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507329497811-jvqmh6h3vqlnkn7n3tacai09mhmtujjd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYudFbYwl8y53j-0AfM_gR25TTM6MJZ8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507329497811-jvqmh6h3vqlnkn7n3tacai09mhmtujjd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

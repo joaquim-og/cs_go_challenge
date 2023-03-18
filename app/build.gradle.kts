@@ -27,7 +27,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches\"")
+            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches/\"")
             buildConfigField ("String", "TOKEN", "'N__a8yh_5itmerXcg_ND3HYJY3u6CTvVNtWgRlYSekr8sGlw31E'")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -35,7 +35,7 @@ android {
             )
         }
         getByName("debug") {
-            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches\"")
+            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches/\"")
             buildConfigField ("String", "TOKEN", "\"N__a8yh_5itmerXcg_ND3HYJY3u6CTvVNtWgRlYSekr8sGlw31E\"")
             isMinifyEnabled = false
         }
@@ -121,6 +121,8 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("tech.thdev:flow-call-adapter-factory:1.0.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
 
     //Glide
     implementation("com.github.bumptech.glide:glide:4.15.0")

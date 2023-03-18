@@ -1,4 +1,4 @@
-package com.confradestech.csgochallenge.dataSources.domain
+package com.confradestech.csgochallenge.dataSources.models
 
 data class Opponent(
     val opponent: OpponentDetails,

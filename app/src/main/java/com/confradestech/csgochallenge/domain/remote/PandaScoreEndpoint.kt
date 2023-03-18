@@ -1,24 +1,28 @@
-package com.confradestech.csgochallenge.domain.repository.remote
+package com.confradestech.csgochallenge.domain.remote
 
+import com.confradestech.csgochallenge.BuildConfig.TOKEN
 import com.confradestech.csgochallenge.dataSources.response.MatchesResponse
-import retrofit2.Call
+import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface PandaScoreEndpoint {
 
-    @GET("/running")
+    @GET("running")
     fun getRunningCsGoMatches(
         @Query("sort") sort: String = "begin_at",
         @Query("page") page: String,
         @Query("per_page") perPage: String = "50",
-    ): Call<MatchesResponse>
+        @Query("token") token: String = TOKEN,
+    ): Flow<Response<MatchesResponse?>>
 
-    @GET("/upcoming")
+    @GET("upcoming")
     fun getUpComingCsGoMatches(
         @Query("sort") sort: String = "begin_at",
         @Query("page") page: String,
         @Query("per_page") perPage: String = "50",
-    ): Call<MatchesResponse>
+        @Query("token") token: String = TOKEN,
+    ): Flow<Response<MatchesResponse?>>
 
 }

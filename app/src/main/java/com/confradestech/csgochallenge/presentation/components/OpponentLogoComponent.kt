@@ -21,9 +21,8 @@ import coil.compose.rememberImagePainter
 import com.confradestech.csgochallenge.R
 import com.confradestech.csgochallenge.dataSources.models.Opponent
 import com.confradestech.csgochallenge.presentation.previewAssets.opponent1
-import com.confradestech.csgochallenge.ui.theme.CsGoChallengeTheme
-import com.confradestech.csgochallenge.ui.theme.colorText
-import com.confradestech.csgochallenge.ui.theme.errorIconColor
+import com.confradestech.csgochallenge.utilities.ui.theme.CsGoChallengeTheme
+import com.confradestech.csgochallenge.utilities.ui.theme.colorText
 
 @Composable
 fun OpponentLogoComponent(opponent: Opponent?) {

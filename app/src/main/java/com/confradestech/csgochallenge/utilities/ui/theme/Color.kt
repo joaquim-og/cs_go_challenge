@@ -1,4 +1,4 @@
-package com.confradestech.csgochallenge.ui.theme
+package com.confradestech.csgochallenge.utilities.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

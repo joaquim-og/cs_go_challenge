@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.confradestech.csgochallenge.dataSources.models.dataStates.matchesListState
+import com.confradestech.csgochallenge.dataSources.models.Game
+import com.confradestech.csgochallenge.dataSources.models.dataStates.MatchesListState
+import com.confradestech.csgochallenge.dataSources.models.dataStates.SelectedGameState
 import com.confradestech.csgochallenge.dataSources.response.MatchesItem
 import com.confradestech.csgochallenge.domain.usecases.RunningMatchesUseCase
 import com.confradestech.csgochallenge.domain.usecases.UpcomingMatchesUseCase
@@ -31,7 +33,9 @@ class MainViewModel @Inject constructor(
     val isSplashLoading = _isSplashLoading.asStateFlow()
 
     //region statesForComposeUi
-    var matchesListState by mutableStateOf(matchesListState())
+    var matchesListState by mutableStateOf(MatchesListState())
+        private set
+    var selectedGameState by mutableStateOf(SelectedGameState())
         private set
     //endregion statesForComposeUi
 
@@ -116,6 +120,16 @@ class MainViewModel @Inject constructor(
             isLoading = false,
             isError = true,
             errorMessage = error.localizedMessage,
+        )
+    }
+
+    fun setSelectedGameValues(match: MatchesItem?, game: Game?) {
+        selectedGameState = selectedGameState.copy(
+            isLoading = false,
+            isError = false,
+            errorMessage = null,
+            match = match,
+            game = game,
         )
     }
 }

@@ -12,6 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 val backgroundColor = Color(0xFF161621)
 val onBackgroundColor = Color(0xFF272639)
+val errorIconColor = Color(0xFF670000)
 
 val redMatch = Color(0XFFFF0000)
 val grayMatch = Color(0X0FF888888)

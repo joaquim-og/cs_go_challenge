@@ -8,6 +8,10 @@ import com.confradestech.csgochallenge.utilities.extensions.convertTimestampToPr
 
 val matchTime = "2023-03-21T13:00:00Z".convertTimestampToPrettyDate()
 
+val matchStatusNotStarted = "not_started"
+
+val matchStatusStarted = "running"
+
 val opponentDetails = OpponentDetails(
     acronym = "",
     id = 126408,

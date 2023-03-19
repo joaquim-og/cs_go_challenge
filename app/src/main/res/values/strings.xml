@@ -2,4 +2,13 @@
     <string name="app_name">Cs Go Challenge</string>
     <string name="running_now_match">AGORA</string>
     <string name="match_card_vs_text">VS</string>
+    <string name="match_not_started_flag">not_started</string>
+    <string name="match_finished_flag">finished</string>
+    <string name="match_status_running_flag">running</string>
+    <string name="home_title">Partidas</string>
+    <string name="generic_error">Opa, algo deu errado ☠. Por favor tente novamente daqui a alguns minutos.</string>
+    <string name="network_error">Sem conexão com a internet</string>
+    <string name="generic_logo_desc">Logo do time não encontrado</string>
+    <string name="generic_logo_league_desc">Logo da liga não encontrado</string>
+    <string name="generic_team_name_desc">Sem nome</string>
 </resources>

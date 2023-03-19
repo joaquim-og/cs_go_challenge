@@ -5,16 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.confradestech.csgochallenge.presentation.VM.MainViewModel
+import com.confradestech.csgochallenge.presentation.home.screen.HomeScreen
 import com.confradestech.csgochallenge.ui.theme.CsGoChallengeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +18,8 @@ class HomeFragment : Fragment() {
 
     private val viewModel by viewModels<MainViewModel>()
 
+    private var actualPageIndex = 1
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,19 +27,28 @@ class HomeFragment : Fragment() {
         return ComposeView(requireActivity()).apply {
             setContent {
                 CsGoChallengeTheme {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Button(onClick = { },
-                                content = {
-                                    Text(text = "XABLAU")
-                                })
+                    HomeScreen(
+                        matchesListState = viewModel.matchesListState,
+                        onCardClicked = { match, game ->
+                            //TODO
+                            //update value on viewModel
+                            // navigate to match details
+
+                        },
+                        onSwipeAction = {
+                            onSwipeRefresh()
+                        },
+                        onLoadMoreItems = {
+                            actualPageIndex += 1
+                            viewModel.fetchMatchesData(actualPageIndex)
                         }
+                    )
                 }
             }
         }
+    }
 
+    private fun onSwipeRefresh() {
+        viewModel.fetchMatchesData(actualPageIndex)
     }
 }

@@ -29,6 +29,8 @@ import com.confradestech.csgochallenge.dataSources.models.League
 import com.confradestech.csgochallenge.dataSources.models.Opponent
 import com.confradestech.csgochallenge.dataSources.models.Serie
 import com.confradestech.csgochallenge.presentation.previewAssets.league
+import com.confradestech.csgochallenge.presentation.previewAssets.matchStatusNotStarted
+import com.confradestech.csgochallenge.presentation.previewAssets.matchStatusStarted
 import com.confradestech.csgochallenge.presentation.previewAssets.matchTime
 import com.confradestech.csgochallenge.presentation.previewAssets.opponent1
 import com.confradestech.csgochallenge.presentation.previewAssets.opponent2
@@ -43,6 +45,7 @@ import com.confradestech.csgochallenge.ui.theme.redMatch
 @Composable
 fun TeamsMatchesCard(
     matchTime: String?,
+    matchStatus: String?,
     opponent1: Opponent?,
     opponent2: Opponent?,
     league: League?,
@@ -59,7 +62,7 @@ fun TeamsMatchesCard(
             containerColor = onBackgroundColor,
         )
     ) {
-        buildHeadContent(matchTime = matchTime)
+        buildHeadContent(matchTime = matchTime, matchStatus = matchStatus)
         buildOpponentsContent(opponent1 = opponent1, opponent2 = opponent2)
         Divider(
             modifier = Modifier
@@ -71,7 +74,13 @@ fun TeamsMatchesCard(
 }
 
 @Composable
-private fun buildHeadContent(matchTime: String?) {
+private fun buildHeadContent(
+    matchTime: String?,
+    matchStatus: String?,
+) {
+
+    val isMatchStarted = matchStatus.equals(stringResource(id = R.string.match_status_running_flag))
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.End,
@@ -80,11 +89,7 @@ private fun buildHeadContent(matchTime: String?) {
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(bottomStart = 20.dp))
                 .background(
-                    color = if (
-                        matchTime?.contains(
-                            stringResource(id = R.string.running_now_match)
-                        ) == true
-                    ) {
+                    color = if (isMatchStarted) {
                         redMatch
                     } else {
                         grayMatch
@@ -92,13 +97,15 @@ private fun buildHeadContent(matchTime: String?) {
                 )
                 .padding(top = 5.dp, end = 10.dp, bottom = 5.dp, start = 10.dp)
         ) {
-            matchTime?.let {
-                Text(
-                    fontSize = 12.sp,
-                    text = it,
-                    color = colorText
-                )
-            }
+            Text(
+                fontSize = 12.sp,
+                text = if (isMatchStarted) {
+                    stringResource(id = R.string.running_now_match)
+                } else {
+                    matchTime?.let { it } ?: ""
+                },
+                color = colorText
+            )
         }
     }
 }
@@ -151,6 +158,7 @@ fun buildLeagueContent(league: League?, serie: Serie?) {
 private fun TeamsMatchesCard_Light_Preview() {
     CsGoChallengeTheme {
         TeamsMatchesCard(
+            matchStatus = matchStatusNotStarted,
             matchTime = matchTime,
             opponent1 = opponent1,
             opponent2 = opponent2,
@@ -166,6 +174,7 @@ private fun TeamsMatchesCard_Light_Preview() {
 private fun TeamsMatchesCard_Dark_Preview() {
     CsGoChallengeTheme {
         TeamsMatchesCard(
+            matchStatus = matchStatusNotStarted,
             matchTime = matchTime,
             opponent1 = opponent1,
             opponent2 = opponent2,
@@ -181,6 +190,7 @@ private fun TeamsMatchesCard_Dark_Preview() {
 private fun TeamsMatchesCard_Now_Match_Light_Preview() {
     CsGoChallengeTheme {
         TeamsMatchesCard(
+            matchStatus = matchStatusStarted,
             matchTime = matchTime,
             opponent1 = opponent1,
             opponent2 = opponent2,
@@ -196,6 +206,7 @@ private fun TeamsMatchesCard_Now_Match_Light_Preview() {
 private fun TeamsMatchesCard_Now_Match_Dark_Preview() {
     CsGoChallengeTheme {
         TeamsMatchesCard(
+            matchStatus = matchStatusStarted,
             matchTime = matchTime,
             opponent1 = opponent1,
             opponent2 = opponent2,

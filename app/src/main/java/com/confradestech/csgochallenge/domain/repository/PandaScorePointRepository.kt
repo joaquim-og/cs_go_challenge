@@ -14,8 +14,6 @@ interface PandaScorePointRepository {
         page: String,
     ): Flow<List<MatchesItem?>?>
 
-    fun getPlayers(
-        teamId: String,
-    ): Flow<List<CsPlayersItem?>?>
+    fun getPlayers(): Flow<List<CsPlayersItem?>?>
 
 }

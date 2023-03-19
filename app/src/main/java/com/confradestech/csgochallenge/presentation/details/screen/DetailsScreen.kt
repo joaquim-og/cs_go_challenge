@@ -16,31 +16,38 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.confradestech.csgochallenge.R
 import com.confradestech.csgochallenge.dataSources.models.Game
+import com.confradestech.csgochallenge.dataSources.models.dataStates.SelectedGameState
 import com.confradestech.csgochallenge.dataSources.response.CsPlayersItem
 import com.confradestech.csgochallenge.dataSources.response.MatchesItem
+import com.confradestech.csgochallenge.presentation.components.GenericErrorComponent
+import com.confradestech.csgochallenge.presentation.components.NetworkErrorComponent
+import com.confradestech.csgochallenge.presentation.components.PlayersListEndComponent
+import com.confradestech.csgochallenge.presentation.components.PlayersListStartComponent
 import com.confradestech.csgochallenge.presentation.components.buildOpponentsContent
 import com.confradestech.csgochallenge.utilities.extensions.convertTimestampToPrettyDate
 import com.confradestech.csgochallenge.utilities.extensions.exceptions.postException
+import com.confradestech.csgochallenge.utilities.extensions.isOnline
 import com.confradestech.csgochallenge.utilities.ui.theme.colorText
 
 @Composable
 fun DetailsScreen(
-    game: Game?,
-    match: MatchesItem?,
-    opponent1: List<CsPlayersItem?>?,
-    opponent2: List<CsPlayersItem?>?,
+    selectedGameState: SelectedGameState?,
     onNavigateBack: () -> Unit,
 ) {
 
@@ -54,13 +61,45 @@ fun DetailsScreen(
                 .fillMaxSize()
                 .scrollable(rememberScrollState(), Orientation.Vertical),
         ) {
-
-            buildHeaderContent(game = game, match = match, onNavigateBack = onNavigateBack)
+            buildHeaderContent(
+                game = selectedGameState?.game,
+                match = selectedGameState?.match,
+                onNavigateBack = onNavigateBack
+            )
             Spacer(modifier = Modifier.height(20.dp))
-            buildOpponents(match = match)
+            buildOpponents(match = selectedGameState?.match)
             Spacer(modifier = Modifier.height(20.dp))
-            buildMatchTime(match = match, game = game)
+            buildMatchTime(match = selectedGameState?.match, game = selectedGameState?.game)
+            Spacer(modifier = Modifier.height(20.dp))
 
+            if (LocalContext.current.isOnline()) {
+                if (selectedGameState?.isLoading == true) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else if (selectedGameState?.isError == true) {
+                    GenericErrorComponent()
+                } else {
+                    AnimatedVisibility(
+                        visible = true,
+                        enter = expandVertically() + fadeIn(),
+                        exit = shrinkVertically() + fadeOut()
+                    ) {
+                        buildOpponentsList(
+                            selectedGameState?.playerListOpponent1,
+                            selectedGameState?.playerListOpponent2
+                        )
+                    }
+                }
+            } else {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    NetworkErrorComponent()
+                }
+            }
 
         }
     }
@@ -149,5 +188,45 @@ private fun buildMatchTime(match: MatchesItem?, game: Game?) {
             },
             color = colorText
         )
+    }
+}
+
+@Composable
+private fun buildOpponentsList(
+    playersOpponent1: List<CsPlayersItem?>?,
+    playersOpponent2: List<CsPlayersItem?>?
+) {
+    val listStateLeft = rememberLazyListState()
+    val listStateRight = rememberLazyListState()
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        LazyColumn(
+            state = listStateLeft,
+            modifier = Modifier.fillMaxWidth(0.5F),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            playersOpponent1?.forEach {
+                item {
+                    PlayersListStartComponent(opponent = it)
+                }
+            }
+        }
+        LazyColumn(
+            state = listStateRight,
+            modifier = Modifier.fillMaxWidth(0.9F),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            playersOpponent2?.forEach {
+                item {
+                    PlayersListEndComponent(opponent = it)
+                }
+            }
+        }
     }
 }

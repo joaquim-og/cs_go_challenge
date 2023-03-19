@@ -28,9 +28,7 @@ interface PandaScoreEndpoint {
 
     @GET("players")
     fun getPlayers(
-        @Query("filterteam_id") teamId: String,
-        @Query("page") page: String = "1",
-        @Query("per_page") perPage: String = "50",
+        @Query("per_page") perPage: String = "150",
         @Query("token") token: String = TOKEN,
     ): Flow<Response<CsPlayersResponse?>>
 

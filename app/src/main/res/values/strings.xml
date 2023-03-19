@@ -10,6 +10,7 @@
     <string name="network_error">Sem conexão com a internet</string>
     <string name="generic_logo_desc">Logo do time não encontrado</string>
     <string name="generic_logo_league_desc">Logo da liga não encontrado</string>
+    <string name="generic_logo_player_desc">Logo do player não encontrado</string>
     <string name="generic_back_icon_desc">Voltar</string>
     <string name="generic_team_name_desc">Sem nome</string>
 </resources>

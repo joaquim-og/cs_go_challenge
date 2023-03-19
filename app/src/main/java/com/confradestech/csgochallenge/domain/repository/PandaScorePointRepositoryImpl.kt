@@ -63,13 +63,9 @@ class PandaScorePointRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-    override fun getPlayers(
-        teamId: String,
-    ): Flow<List<CsPlayersItem?>?> = flow {
+    override fun getPlayers(): Flow<List<CsPlayersItem?>?> = flow {
         runCatching {
-            pandaScoreEndpoint.getPlayers(
-                teamId = teamId
-            )
+            pandaScoreEndpoint.getPlayers()
         }.onSuccess { responseFlow ->
             responseFlow.collect {
                 val body = it.body()

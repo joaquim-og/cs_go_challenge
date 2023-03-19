@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.confradestech.csgochallenge.dataSources.models.Game
+import com.confradestech.csgochallenge.dataSources.models.Opponent
 import com.confradestech.csgochallenge.dataSources.models.dataStates.MatchesListState
 import com.confradestech.csgochallenge.dataSources.models.dataStates.SelectedGameState
 import com.confradestech.csgochallenge.dataSources.response.MatchesItem
@@ -108,45 +109,47 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getRemoteCsPlayers(teamId: Int?, isOpponent1: Boolean) {
+    private fun getRemoteOpponent1CsPlayers(
+        teamId: Int?,
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
-
-            getPlayerListUseCase.get().getPlayerList(teamId ?: 0).distinctUntilChanged()
+            setSelectedGameLoadingState()
+            getPlayerListUseCase.get().getPlayerList().distinctUntilChanged()
                 .catch {
                     setSelectedGameErrorState(it)
                     it.postException()
                 }.collect { playersList ->
 
-                    selectedGameState = if (isOpponent1) {
-                        selectedGameState.copy(
-                            playerListOpponent1 = playersList,
-                        )
-                    } else {
-                        selectedGameState.copy(
-                            isLoading = false,
-                            playerListOpponent2 = playersList,
-                        )
-                    }
+                    val teamPlayersList = playersList?.filter { it?.currentTeam?.id == teamId }
+
+                    println("Xablau aqui o teamPlayer List 1 -> $teamPlayersList")
+                    println("Xablau aqui o teamPlayer List 1 size -> ${teamPlayersList?.size}")
+                    selectedGameState = selectedGameState.copy(
+                        playerListOpponent1 = teamPlayersList,
+                    )
                 }
         }
     }
 
-    private fun getCsPlayersValue(match: MatchesItem?) {
-        val opponent1 = try {
-            match?.opponents?.get(0)
-        } catch (error: Exception) {
-            error.postException()
-            null
-        }
-        getRemoteCsPlayers(teamId = opponent1?.opponentDetails?.id, isOpponent1 = true)
+    private fun getRemoteOpponent2CsPlayers(
+        teamId: Int?,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            setSelectedGameLoadingState()
+            getPlayerListUseCase.get().getPlayerList().distinctUntilChanged()
+                .catch {
+                    setSelectedGameErrorState(it)
+                    it.postException()
+                }.collect { playersList ->
 
-        val opponent2 = try {
-            match?.opponents?.get(1)
-        } catch (error: Exception) {
-            error.postException()
-            null
+                    val teamPlayersList = playersList?.filter { it?.currentTeam?.id == teamId }
+
+                    selectedGameState = selectedGameState.copy(
+                        isLoading = false,
+                        playerListOpponent2 = teamPlayersList,
+                    )
+                }
         }
-        getRemoteCsPlayers(teamId = opponent2?.opponentDetails?.id, isOpponent1 = false)
     }
 
     private fun setMatchesLoadingState() {
@@ -186,11 +189,31 @@ class MainViewModel @Inject constructor(
             match = match,
             game = game,
         )
-        getCsPlayersValue(match)
+        val opponent1 = try {
+            match?.opponents?.get(0)
+        } catch (error: Exception) {
+            error.postException()
+            null
+        }
+        getRemoteOpponent1CsPlayers(
+            teamId = opponent1?.opponentDetails?.id,
+        )
+
+        val opponent2 = try {
+            match?.opponents?.get(1)
+        } catch (error: Exception) {
+            error.postException()
+            null
+        }
+        getRemoteOpponent2CsPlayers(
+            teamId = opponent2?.opponentDetails?.id,
+        )
     }
 
-    fun cleanSelectedGameState() {
-        selectedGameState = SelectedGameState()
+    private fun setSelectedGameLoadingState() {
+        selectedGameState = selectedGameState.copy(
+            isLoading = true,
+        )
     }
 }
 

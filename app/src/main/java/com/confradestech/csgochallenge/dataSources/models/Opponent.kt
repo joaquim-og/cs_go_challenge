@@ -1,6 +1,9 @@
 package com.confradestech.csgochallenge.dataSources.models
 
+import com.google.gson.annotations.SerializedName
+
 data class Opponent(
-    val opponent: OpponentDetails,
+    @SerializedName("opponent")
+    val opponentDetails: OpponentDetails,
     val type: String
 )

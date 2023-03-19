@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.confradestech.csgochallenge.dataSources.models.dataStates.RunningMatchesListState
-import com.confradestech.csgochallenge.dataSources.models.dataStates.UpcomingMatchesListState
+import com.confradestech.csgochallenge.dataSources.models.dataStates.matchesListState
+import com.confradestech.csgochallenge.dataSources.response.MatchesItem
 import com.confradestech.csgochallenge.domain.usecases.RunningMatchesUseCase
 import com.confradestech.csgochallenge.domain.usecases.UpcomingMatchesUseCase
 import com.confradestech.csgochallenge.utilities.extensions.exceptions.postException
@@ -31,66 +31,92 @@ class MainViewModel @Inject constructor(
     val isSplashLoading = _isSplashLoading.asStateFlow()
 
     //region statesForComposeUi
-    var runningMatchesListState by mutableStateOf(RunningMatchesListState())
-        private set
-
-    var upcomingMatchesListState by mutableStateOf(UpcomingMatchesListState())
+    var matchesListState by mutableStateOf(matchesListState())
         private set
     //endregion statesForComposeUi
 
     init {
         fetchMatchesData()
+        updateSplashScreenCounter()
     }
 
-    private fun fetchMatchesData(pageIndex: Int = 1) {
+    private fun updateSplashScreenCounter() {
         viewModelScope.launch {
-            getRunningMatches(pageIndex)
-            getUpcomingMatches(pageIndex)
             delay(3000)
             _isSplashLoading.value = false
         }
     }
 
-    fun getRunningMatches(pageIndex: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun fetchMatchesData(pageIndex: Int = 1) {
+        viewModelScope.launch {
+            getRunningMatches(pageIndex)
+        }
+    }
 
+    private fun getRunningMatches(pageIndex: Int) {
+        setMatchesLoadingState()
+        viewModelScope.launch(Dispatchers.IO) {
             runningMatchesUseCase.get().getRunningMatches(pageIndex).distinctUntilChanged().catch {
-                runningMatchesListState = runningMatchesListState.copy(
-                    isLoading = false,
-                    isError = true,
-                    errorMessage = it.localizedMessage,
-                )
+                setMatchesErrorState(it)
                 it.postException()
             }.collect { runningMatches ->
-                runningMatchesListState = runningMatchesListState.copy(
-                    isLoading = false,
+                matchesListState = matchesListState.copy(
                     isError = false,
                     errorMessage = null,
-                    runningMatches = runningMatches
+                    matches = runningMatches
                 )
+                getUpcomingMatches(pageIndex)
             }
         }
     }
 
-    fun getUpcomingMatches(pageIndex: Int) {
+    private fun getUpcomingMatches(pageIndex: Int) {
         viewModelScope.launch(Dispatchers.IO) {
+            val actualMatchesList = mutableListOf<MatchesItem>()
 
-            upcomingMatchesUseCase.get().getUpcomingMatches(pageIndex).distinctUntilChanged().catch {
-                upcomingMatchesListState = upcomingMatchesListState.copy(
-                    isLoading = false,
-                    isError = true,
-                    errorMessage = it.localizedMessage,
-                )
-                it.postException()
-            }.collect { upcomingMatches ->
-                upcomingMatchesListState = upcomingMatchesListState.copy(
-                    isLoading = false,
-                    isError = false,
-                    errorMessage = null,
-                    runningMatches = upcomingMatches
-                )
+            matchesListState.matches?.forEach { matchItem ->
+                matchItem?.let {
+                    actualMatchesList.add(it)
+                }
             }
+
+            upcomingMatchesUseCase.get().getUpcomingMatches(pageIndex).distinctUntilChanged()
+                .catch {
+                    setMatchesErrorState(it)
+                    it.postException()
+                }.collect { upcomingMatches ->
+
+                    upcomingMatches?.forEach { upcomingMatch ->
+                        upcomingMatch?.let {
+                            actualMatchesList.add(it)
+                        }
+                    }
+
+                    matchesListState = matchesListState.copy(
+                        isLoading = false,
+                        isError = false,
+                        errorMessage = null,
+                        matches = actualMatchesList.toList()
+                    )
+                }
         }
+    }
+
+    private fun setMatchesLoadingState() {
+        matchesListState = matchesListState.copy(
+            isLoading = true,
+            isError = false,
+            errorMessage = null,
+            matches = null,
+        )
+    }
+
+    private fun setMatchesErrorState(error: Throwable) {
+        matchesListState = matchesListState.copy(
+            isLoading = false,
+            isError = true,
+            errorMessage = error.localizedMessage,
+        )
     }
 }
 

@@ -1,6 +1,6 @@
 package com.confradestech.csgochallenge.dataSources.models
 
 data class Opponent(
-    val opponent: OpponentDetails,
+    val opponentDetails: OpponentDetails,
     val type: String
 )

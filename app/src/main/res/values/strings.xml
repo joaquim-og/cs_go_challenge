@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Cs Go Challenge</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="running_now_match">AGORA</string>
+    <string name="match_card_vs_text">VS</string>
 </resources>

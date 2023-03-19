@@ -122,14 +122,10 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("tech.thdev:flow-call-adapter-factory:1.0.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:3.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
-    //Glide
-    implementation("com.github.bumptech.glide:glide:4.15.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.15.0")
-
-    //Landscapist for render Glide in compose
-    implementation("com.github.skydoves:landscapist-glide:2.0.0")
+    //Coil
+    implementation("io.coil-kt:coil-compose:1.3.1")
 
     //Hilt
     implementation("com.google.dagger:hilt-android:2.44")

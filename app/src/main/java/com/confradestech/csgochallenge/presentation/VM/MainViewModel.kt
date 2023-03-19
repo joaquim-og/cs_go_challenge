@@ -9,6 +9,7 @@ import com.confradestech.csgochallenge.dataSources.models.Game
 import com.confradestech.csgochallenge.dataSources.models.dataStates.MatchesListState
 import com.confradestech.csgochallenge.dataSources.models.dataStates.SelectedGameState
 import com.confradestech.csgochallenge.dataSources.response.MatchesItem
+import com.confradestech.csgochallenge.domain.usecases.GetPlayerListUseCase
 import com.confradestech.csgochallenge.domain.usecases.RunningMatchesUseCase
 import com.confradestech.csgochallenge.domain.usecases.UpcomingMatchesUseCase
 import com.confradestech.csgochallenge.utilities.extensions.exceptions.postException
@@ -26,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val runningMatchesUseCase: Lazy<RunningMatchesUseCase>,
-    private val upcomingMatchesUseCase: Lazy<UpcomingMatchesUseCase>
+    private val upcomingMatchesUseCase: Lazy<UpcomingMatchesUseCase>,
+    private val getPlayerListUseCase: Lazy<GetPlayerListUseCase>
 ) : ViewModel() {
 
     private val _isSplashLoading = MutableStateFlow(true)
@@ -106,6 +108,47 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun getRemoteCsPlayers(teamId: Int?, isOpponent1: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            getPlayerListUseCase.get().getPlayerList(teamId ?: 0).distinctUntilChanged()
+                .catch {
+                    setSelectedGameErrorState(it)
+                    it.postException()
+                }.collect { playersList ->
+
+                    selectedGameState = if (isOpponent1) {
+                        selectedGameState.copy(
+                            playerListOpponent1 = playersList,
+                        )
+                    } else {
+                        selectedGameState.copy(
+                            isLoading = false,
+                            playerListOpponent2 = playersList,
+                        )
+                    }
+                }
+        }
+    }
+
+    private fun getCsPlayersValue(match: MatchesItem?) {
+        val opponent1 = try {
+            match?.opponents?.get(0)
+        } catch (error: Exception) {
+            error.postException()
+            null
+        }
+        getRemoteCsPlayers(teamId = opponent1?.opponentDetails?.id, isOpponent1 = true)
+
+        val opponent2 = try {
+            match?.opponents?.get(1)
+        } catch (error: Exception) {
+            error.postException()
+            null
+        }
+        getRemoteCsPlayers(teamId = opponent2?.opponentDetails?.id, isOpponent1 = false)
+    }
+
     private fun setMatchesLoadingState() {
         matchesListState = matchesListState.copy(
             isLoading = true,
@@ -123,6 +166,18 @@ class MainViewModel @Inject constructor(
         )
     }
 
+    private fun setSelectedGameErrorState(error: Throwable) {
+        selectedGameState = selectedGameState.copy(
+            isLoading = false,
+            isError = true,
+            errorMessage = error.localizedMessage,
+            match = null,
+            game = null,
+            playerListOpponent1 = null,
+            playerListOpponent2 = null,
+        )
+    }
+
     fun setSelectedGameValues(match: MatchesItem?, game: Game?) {
         selectedGameState = selectedGameState.copy(
             isLoading = false,
@@ -131,6 +186,11 @@ class MainViewModel @Inject constructor(
             match = match,
             game = game,
         )
+        getCsPlayersValue(match)
+    }
+
+    fun cleanSelectedGameState() {
+        selectedGameState = SelectedGameState()
     }
 }
 

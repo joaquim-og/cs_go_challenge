@@ -28,13 +28,14 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return ComposeView(requireActivity()).apply {
             setContent {
                 CsGoChallengeTheme {
                     DetailsScreen(
                         game = viewModel.selectedGameState.game,
                         match = viewModel.selectedGameState.match,
+                        opponent1 = viewModel.selectedGameState.playerListOpponent1,
+                        opponent2 = viewModel.selectedGameState.playerListOpponent2,
                         onNavigateBack = ::onNavigateBack
                     )
                 }
@@ -45,5 +46,6 @@ class DetailsFragment : Fragment() {
 
     private fun onNavigateBack(){
         findNavController().navigateUp()
+        viewModel.cleanSelectedGameState()
     }
 }

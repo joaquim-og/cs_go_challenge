@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.confradestech.csgochallenge.R
 import com.confradestech.csgochallenge.dataSources.models.Game
+import com.confradestech.csgochallenge.dataSources.response.CsPlayersItem
 import com.confradestech.csgochallenge.dataSources.response.MatchesItem
 import com.confradestech.csgochallenge.presentation.components.buildOpponentsContent
 import com.confradestech.csgochallenge.utilities.extensions.convertTimestampToPrettyDate
@@ -38,6 +39,8 @@ import com.confradestech.csgochallenge.utilities.ui.theme.colorText
 fun DetailsScreen(
     game: Game?,
     match: MatchesItem?,
+    opponent1: List<CsPlayersItem?>?,
+    opponent2: List<CsPlayersItem?>?,
     onNavigateBack: () -> Unit,
 ) {
 

@@ -27,7 +27,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches/\"")
+            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/\"")
             buildConfigField ("String", "TOKEN", "'N__a8yh_5itmerXcg_ND3HYJY3u6CTvVNtWgRlYSekr8sGlw31E'")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -35,7 +35,7 @@ android {
             )
         }
         getByName("debug") {
-            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches/\"")
+            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/\"")
             buildConfigField ("String", "TOKEN", "\"N__a8yh_5itmerXcg_ND3HYJY3u6CTvVNtWgRlYSekr8sGlw31E\"")
             isMinifyEnabled = false
         }

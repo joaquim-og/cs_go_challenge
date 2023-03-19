@@ -110,9 +110,6 @@ dependencies {
     // Integration with ViewModels
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
 
-    //Lottie animations compose
-    implementation("com.airbnb.android:lottie-compose:5.2.0")
-
     //Gson
     implementation("com.google.code.gson:gson:2.9.1")
 

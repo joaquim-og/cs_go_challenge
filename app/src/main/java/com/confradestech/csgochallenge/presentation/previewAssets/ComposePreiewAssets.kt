@@ -1,10 +1,14 @@
 package com.confradestech.csgochallenge.presentation.previewAssets
 
+import com.confradestech.csgochallenge.dataSources.models.CurrentTeam
+import com.confradestech.csgochallenge.dataSources.models.CurrentVideogame
 import com.confradestech.csgochallenge.dataSources.models.League
 import com.confradestech.csgochallenge.dataSources.models.Opponent
 import com.confradestech.csgochallenge.dataSources.models.OpponentDetails
 import com.confradestech.csgochallenge.dataSources.models.Serie
+import com.confradestech.csgochallenge.dataSources.response.CsPlayersItem
 import com.confradestech.csgochallenge.utilities.extensions.convertTimestampToPrettyDate
+import com.google.gson.annotations.SerializedName
 
 val matchTime = "2023-03-21T13:00:00Z".convertTimestampToPrettyDate()
 
@@ -59,3 +63,21 @@ val serie = Serie(
     winnerType = "",
     year = 2023
 )
+
+val player =  CsPlayersItem(
+    age = null,
+    birthday = null,
+    currentTeam = null,
+    currentVideogame = null,
+    firstName = "First Name",
+    id = 0,
+    imageUrl = "https://cdn.pandascore.co/images/player/image/48406/600px_bt0_at_wesg_2016_americas_finals.png",
+    lastName = "Last name",
+    modifiedAt = "",
+    name = "Nome Jogador",
+    nationality = null,
+    role = null,
+    slug = null,
+)
+
+val listPlayers = listOf(player, player, player, player, player)

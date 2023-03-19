@@ -2,6 +2,8 @@ package com.confradestech.csgochallenge.di
 
 import com.confradestech.csgochallenge.domain.repository.PandaScorePointRepository
 import com.confradestech.csgochallenge.domain.repository.mappers.MatchesItemMapper
+import com.confradestech.csgochallenge.domain.repository.mappers.PlayersItemMapper
+import com.confradestech.csgochallenge.domain.usecases.GetPlayerListUseCase
 import com.confradestech.csgochallenge.domain.usecases.RunningMatchesUseCase
 import com.confradestech.csgochallenge.domain.usecases.UpcomingMatchesUseCase
 import dagger.Module
@@ -24,6 +26,11 @@ object AppModule {
     @Singleton
     fun upcomingMatchesUseCase(repository: PandaScorePointRepository): UpcomingMatchesUseCase =
         UpcomingMatchesUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun getPlayerListUseCase(repository: PandaScorePointRepository): GetPlayerListUseCase =
+        GetPlayerListUseCase(repository)
     //endregion UseCases
 
     //region Mappers
@@ -31,6 +38,11 @@ object AppModule {
     @Singleton
     fun matchesItemMapper(): MatchesItemMapper =
         MatchesItemMapper()
+
+    @Provides
+    @Singleton
+    fun playersItemMapper(): PlayersItemMapper =
+        PlayersItemMapper()
     //endregion Mappers
 
 }

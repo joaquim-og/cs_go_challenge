@@ -6,17 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import com.confradestech.csgochallenge.R
 import com.confradestech.csgochallenge.presentation.VM.MainViewModel
 import com.confradestech.csgochallenge.presentation.home.screen.HomeScreen
-import com.confradestech.csgochallenge.ui.theme.CsGoChallengeTheme
+import com.confradestech.csgochallenge.utilities.extensions.navigateSafe
+import com.confradestech.csgochallenge.utilities.extensions.obtainViewModel
+import com.confradestech.csgochallenge.utilities.ui.theme.CsGoChallengeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel: MainViewModel by lazy {
+        obtainViewModel(
+            requireActivity(),
+            MainViewModel::class.java,
+            defaultViewModelProviderFactory
+        )
+    }
 
     private var actualPageIndex = 1
 
@@ -30,10 +37,8 @@ class HomeFragment : Fragment() {
                     HomeScreen(
                         matchesListState = viewModel.matchesListState,
                         onCardClicked = { match, game ->
-                            //TODO
-                            //update value on viewModel
-                            // navigate to match details
-
+                            viewModel.setSelectedGameValues(match, game)
+                            navigateToDetailsFragment()
                         },
                         onSwipeAction = {
                             onSwipeRefresh()
@@ -50,5 +55,9 @@ class HomeFragment : Fragment() {
 
     private fun onSwipeRefresh() {
         viewModel.fetchMatchesData(actualPageIndex)
+    }
+
+    private fun navigateToDetailsFragment() {
+        navigateSafe(R.id.action_homeFragment_to_detailsFragment)
     }
 }

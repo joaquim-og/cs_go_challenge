@@ -27,8 +27,8 @@ import com.confradestech.csgochallenge.dataSources.models.League
 import com.confradestech.csgochallenge.dataSources.models.Serie
 import com.confradestech.csgochallenge.presentation.previewAssets.league
 import com.confradestech.csgochallenge.presentation.previewAssets.serie
-import com.confradestech.csgochallenge.ui.theme.CsGoChallengeTheme
-import com.confradestech.csgochallenge.ui.theme.colorText
+import com.confradestech.csgochallenge.utilities.ui.theme.CsGoChallengeTheme
+import com.confradestech.csgochallenge.utilities.ui.theme.colorText
 
 @Composable
 fun LeagueDetailsLogoComponent(league: League?, serie: Serie?) {

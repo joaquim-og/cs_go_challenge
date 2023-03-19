@@ -27,7 +27,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches/\"")
+            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/\"")
             buildConfigField ("String", "TOKEN", "'N__a8yh_5itmerXcg_ND3HYJY3u6CTvVNtWgRlYSekr8sGlw31E'")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -35,7 +35,7 @@ android {
             )
         }
         getByName("debug") {
-            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/matches/\"")
+            buildConfigField ("String", "BASE_URL", "\"https://api.pandascore.co/csgo/\"")
             buildConfigField ("String", "TOKEN", "\"N__a8yh_5itmerXcg_ND3HYJY3u6CTvVNtWgRlYSekr8sGlw31E\"")
             isMinifyEnabled = false
         }
@@ -109,9 +109,6 @@ dependencies {
     implementation("androidx.compose.animation:animation:1.3.3")
     // Integration with ViewModels
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
-
-    //Lottie animations compose
-    implementation("com.airbnb.android:lottie-compose:5.2.0")
 
     //Gson
     implementation("com.google.code.gson:gson:2.9.1")

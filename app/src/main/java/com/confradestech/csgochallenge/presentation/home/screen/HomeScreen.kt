@@ -28,12 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.confradestech.csgochallenge.R
 import com.confradestech.csgochallenge.dataSources.models.Game
-import com.confradestech.csgochallenge.dataSources.models.dataStates.matchesListState
+import com.confradestech.csgochallenge.dataSources.models.dataStates.MatchesListState
 import com.confradestech.csgochallenge.dataSources.response.MatchesItem
 import com.confradestech.csgochallenge.presentation.components.GenericErrorComponent
 import com.confradestech.csgochallenge.presentation.components.NetworkErrorComponent
 import com.confradestech.csgochallenge.presentation.components.TeamsMatchesCard
-import com.confradestech.csgochallenge.ui.theme.colorText
+import com.confradestech.csgochallenge.utilities.ui.theme.colorText
 import com.confradestech.csgochallenge.utilities.extensions.convertTimestampToPrettyDate
 import com.confradestech.csgochallenge.utilities.extensions.exceptions.postException
 import com.confradestech.csgochallenge.utilities.extensions.isOnline
@@ -43,7 +43,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun HomeScreen(
-    matchesListState: matchesListState,
+    matchesListState: MatchesListState,
     onCardClicked: (MatchesItem?, Game?) -> Unit,
     onSwipeAction: () -> Unit,
     onLoadMoreItems: () -> Unit,
@@ -103,7 +103,7 @@ fun HomeScreen(
 
 @Composable
 fun buildCardsContent(
-    matchesListState: matchesListState,
+    matchesListState: MatchesListState,
     onCardClicked: (MatchesItem?, Game?) -> Unit,
     onLoadMoreItems: () -> Unit
 ) {

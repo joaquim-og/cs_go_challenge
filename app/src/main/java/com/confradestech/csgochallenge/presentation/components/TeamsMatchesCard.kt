@@ -35,11 +35,11 @@ import com.confradestech.csgochallenge.presentation.previewAssets.matchTime
 import com.confradestech.csgochallenge.presentation.previewAssets.opponent1
 import com.confradestech.csgochallenge.presentation.previewAssets.opponent2
 import com.confradestech.csgochallenge.presentation.previewAssets.serie
-import com.confradestech.csgochallenge.ui.theme.CsGoChallengeTheme
-import com.confradestech.csgochallenge.ui.theme.colorText
-import com.confradestech.csgochallenge.ui.theme.grayMatch
-import com.confradestech.csgochallenge.ui.theme.onBackgroundColor
-import com.confradestech.csgochallenge.ui.theme.redMatch
+import com.confradestech.csgochallenge.utilities.ui.theme.CsGoChallengeTheme
+import com.confradestech.csgochallenge.utilities.ui.theme.colorText
+import com.confradestech.csgochallenge.utilities.ui.theme.grayMatch
+import com.confradestech.csgochallenge.utilities.ui.theme.onBackgroundColor
+import com.confradestech.csgochallenge.utilities.ui.theme.redMatch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
